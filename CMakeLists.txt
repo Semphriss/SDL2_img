@@ -9,7 +9,8 @@ option(SUPPORT_JPG "Support loading JPEG images" ON)
 option(SUPPORT_PNG "Support loading PNG images" ON)
 option(SUPPORT_WEBP "Support loading WEBP images" OFF)
 option(BUILD_SHOWIMAGE "Build the showimage sample program" OFF)
-option(BUILD_SHARED_LIBS "Build the library as a shared library" ON)
+# Already defined by CMake
+#option(BUILD_SHARED_LIBS "Build the library as a shared library" OFF)
 
 if (NOT BUILD_SHARED_LIBS)
 	set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -70,12 +71,13 @@ endif()
 add_library(SDL2::image ALIAS SDL2_image)
 
 target_include_directories(SDL2_image PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(SDL2_image PUBLIC ${SDL2_INCLUDE_DIRS})
 
-if (BUILD_SHARED_LIBS)
-	target_link_libraries(SDL2_image PUBLIC SDL2::SDL2)
-else()
-	target_link_libraries(SDL2_image PUBLIC SDL2::SDL2-static)
-endif()
+#if (BUILD_SHARED_LIBS)
+	target_link_libraries(SDL2_image PUBLIC SDL2)
+#else()
+#	target_link_libraries(SDL2_image PUBLIC SDL2-static)
+#endif()
 
 if(BUILD_SHOWIMAGE)
 	add_executable(showimage showimage.c)
